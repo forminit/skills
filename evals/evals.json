@@ -13,7 +13,7 @@
       "baselineRequest": "Connect the project request form on index.html to Forminit (forminit.com). My Form ID is abc12def345.",
       "expect": [
         "name -> fi-sender-fullName; email -> fi-sender-email; company -> fi-sender-company",
-        "phone has a local placeholder and no country field -> fi-text-phone by default, or the plan asks; never fi-sender-phone without a +country code rule",
+        "phone -> fi-sender-phone by default (the plan may offer fi-text-phone); no country field, pattern or placeholder added to it",
         "website (type=url) -> fi-url-website; project_type -> fi-select-project_type; budget radios -> fi-radio-budget (no [])",
         "services checkbox group -> fi-checkbox-services[] on every box",
         "launch_date -> fi-date-launch_date; message textarea -> fi-text-message",
@@ -92,7 +92,7 @@
       "baselineRequest": "Connect the appointment form in this project to Forminit (forminit.com). My Form ID is abc12def345.",
       "expect": [
         "full_name -> fi-sender-fullName; email -> fi-sender-email",
-        "phone (type tel, no + pattern, no country field) -> fi-text-phone by default, or the plan asks",
+        "phone -> fi-sender-phone by default (the plan may offer fi-text-phone); no country field or pattern added",
         "dob -> fi-date-dob; preferred_time (datetime-local) -> fi-date-preferred_time",
         "service -> fi-select-service; new_patient -> fi-radio-new_patient",
         "insurance (multiple) -> the plan asks; after the reply fi-file-insurance[] with multiple",
@@ -111,7 +111,7 @@
         "fi-textarea-message -> fi-text-message (unknown type is dropped)",
         "fi-number-budget with decimal placeholder -> fi-text-budget (form-data numbers are cut to integers)",
         "fi-file-photos multiple -> fi-file-photos[]",
-        "fi-sender-phone with a local placeholder: flagged, moved to fi-text-phone or kept with a + format note",
+        "fi-sender-phone kept (the plan may offer fi-text-phone); no country field added",
         "Form ID abc12def345 kept; a synchronous guard and disabled button with finally added",
         "success decided by data.hashId; the raw error.message is no longer shown to visitors",
         "the redirect to redirectUrl is raised in the plan (kept only if the user wants it)"

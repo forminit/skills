@@ -1,0 +1,11 @@
+{
+  "name": "forminit-skills",
+  "private": true,
+  "type": "module",
+  "description": "Official Forminit agent skills",
+  "license": "MIT",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs && node scripts/build.mjs --check"
+  }
+}

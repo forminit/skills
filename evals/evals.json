@@ -1,0 +1,121 @@
+{
+  "formId": "abc12def345",
+  "reply": "Looks good, go ahead with your defaults. For any file upload input, allow multiple files.",
+  "conditions": {
+    "skill": "The forminit-setup skill is installed: read {SKILL_DIR}/SKILL.md, follow it, and read its references/ files as it says.",
+    "prompt": "The user pasted the Forminit dashboard setup prompt (prompts/examples/dashboard.txt). No skill is installed.",
+    "baseline": "No skill and no prompt rules: only the user's one-line request."
+  },
+  "cases": [
+    {
+      "fixture": "html-contact",
+      "request": "Connect the project request form on index.html to Forminit. Form ID: abc12def345",
+      "baselineRequest": "Connect the project request form on index.html to Forminit (forminit.com). My Form ID is abc12def345.",
+      "expect": [
+        "name -> fi-sender-fullName; email -> fi-sender-email; company -> fi-sender-company",
+        "phone has a local placeholder and no country field -> fi-text-phone by default, or the plan asks; never fi-sender-phone without a +country code rule",
+        "website (type=url) -> fi-url-website; project_type -> fi-select-project_type; budget radios -> fi-radio-budget (no [])",
+        "services checkbox group -> fi-checkbox-services[] on every box",
+        "launch_date -> fi-date-launch_date; message textarea -> fi-text-message",
+        "attachment: the plan asks one file or multiple; after the reply it is fi-file-attachment[] with the multiple attribute",
+        "newsletter single checkbox -> fi-checkbox-newsletter (value yes preferred)",
+        "the search form in the header is untouched",
+        "the SDK script tag https://forminit.com/sdk/v1/forminit.js is loaded before the handler; script.js keeps one submit listener",
+        "success message and reset only after a successful submit; styles.css unchanged"
+      ]
+    },
+    {
+      "fixture": "react-vite-rhf",
+      "request": "Connect the demo request form to Forminit. Form ID: abc12def345",
+      "baselineRequest": "Connect the demo request form in this project to Forminit (forminit.com). My Form ID is abc12def345.",
+      "expect": [
+        "react-hook-form keeps its register names; FormData is built from the validated values",
+        "firstName/lastName -> fi-sender-firstName/fi-sender-lastName; workEmail -> fi-sender-email",
+        "companySize -> fi-select-companySize; country (option values are country names) -> fi-select-country by default, not fi-country",
+        "interests -> fi-checkbox-interests[] once per selected item; teamSize -> fi-number-teamSize",
+        "notes -> fi-text-notes; attachments (multiple) -> fi-file-attachments[] once per file",
+        "agreeToTerms -> fi-checkbox-agreeToTerms with a string value such as yes",
+        "forminit added to package.json (pnpm add forminit); import { Forminit } from \"forminit\"",
+        "a ref guard besides isSubmitting; disabled={sending || isSubmitting} so the button stays disabled while sending",
+        "the success toast and reset() only after data.hashId; an error shows feedback and keeps the input"
+      ]
+    },
+    {
+      "fixture": "nextjs-formspree",
+      "request": "Move the job application form from Formspree to Forminit. Form ID: abc12def345",
+      "baselineRequest": "Move the job application form in this project from Formspree to Forminit (forminit.com). My Form ID is abc12def345.",
+      "expect": [
+        "the formspree.io fetch is replaced by forminit.submit; no getform.io; no Formspree URL left in the form",
+        "_subject hidden input removed and listed; _gotcha honeypot kept unchanged without fi- prefix",
+        "name -> fi-sender-fullName; email -> fi-sender-email; linkedin -> fi-url-linkedin; role -> fi-select-role",
+        "years -> fi-number-years; message -> fi-text-message; consent -> fi-checkbox-consent",
+        "resume: the plan asks one file or multiple; after the reply it is fi-file-resume[] with multiple",
+        "next.config.mjs CSP connect-src allows https://forminit.com (raised in the plan); the formspree.io host is kept and listed, not removed",
+        "\"use client\" kept; the existing sent/error UI kept; success only on data.hashId; a synchronous guard besides state",
+        "forminit added to package.json (npm install forminit)"
+      ]
+    },
+    {
+      "fixture": "nuxt-vmodel",
+      "request": "Connect the class feedback form to Forminit. Form ID: abc12def345",
+      "baselineRequest": "Connect the class feedback form in this project to Forminit (forminit.com). My Form ID is abc12def345.",
+      "expect": [
+        "v-model inputs get fi-* name attributes, or FormData is built from the reactive values",
+        "firstName/lastName -> fi-sender-firstName/fi-sender-lastName; email -> fi-sender-email",
+        "classDate -> fi-date-classDate; instructor -> fi-select-instructor",
+        "rating radios 1 to 5 -> fi-rating-* (no [])",
+        "topics multi-select -> fi-select-topics[] (each selected value sent)",
+        "comments -> fi-text-comments",
+        "the $fetch call is replaced by the browser submit",
+        "the submit button is disabled while sending with a synchronous guard (it had none)",
+        "done/failed behavior kept; forminit added to package.json (yarn add forminit)"
+      ]
+    },
+    {
+      "fixture": "sveltekit-enhance",
+      "request": "Connect the RSVP form to Forminit. Form ID: abc12def345",
+      "baselineRequest": "Connect the RSVP form in this project to Forminit (forminit.com). My Form ID is abc12def345.",
+      "expect": [
+        "use:enhance is removed from the form, so only the Forminit browser handler sends",
+        "name -> fi-sender-fullName (or fi-text-name if the plan offered it for several guests); email -> fi-sender-email; phone (its pattern still admits invalid numbers) -> fi-sender-phone or fi-text-phone, or a plan question with either default",
+        "attending radios -> fi-radio-attending; guests -> fi-number-guests; diet checkboxes -> fi-checkbox-diet[]",
+        "song -> fi-text-song; message -> fi-text-message",
+        "photo: the plan asks one file or multiple; after the reply it is fi-file-photo[] with multiple",
+        "Svelte 5 runes syntax kept (onsubmit, $state), no on:submit mixed in",
+        "the thank-you markup is shown after a successful submit (local state replaces form?.success)",
+        "button disabled while sending with a guard; forminit added to package.json (bun add forminit)"
+      ]
+    },
+    {
+      "fixture": "astro-static",
+      "request": "Connect the appointment form to Forminit. Form ID: abc12def345",
+      "baselineRequest": "Connect the appointment form in this project to Forminit (forminit.com). My Form ID is abc12def345.",
+      "expect": [
+        "full_name -> fi-sender-fullName; email -> fi-sender-email",
+        "phone (type tel, no + pattern, no country field) -> fi-text-phone by default, or the plan asks",
+        "dob -> fi-date-dob; preferred_time (datetime-local) -> fi-date-preferred_time",
+        "service -> fi-select-service; new_patient -> fi-radio-new_patient",
+        "insurance (multiple) -> the plan asks; after the reply fi-file-insurance[] with multiple",
+        "notes -> fi-text-notes; sms_ok single checkbox -> fi-checkbox-sms_ok",
+        "the bundled script imports forminit from npm (or an is:inline script uses the CDN global with html.md's plain-JS handler, no TypeScript), FORM_ID not passed via define:vars",
+        "the existing .booking-status element is reused; button disabled while sending with a guard"
+      ]
+    },
+    {
+      "fixture": "html-fix-existing",
+      "request": "Our Forminit quote form on index.html loses some fields and sometimes fails. Please fix it.",
+      "baselineRequest": "Our Forminit quote form on index.html loses some fields and sometimes fails. Please fix it.",
+      "expect": [
+        "fi-sender-name -> fi-sender-fullName (it rejects the whole submission)",
+        "fi-checkbox-rooms -> fi-checkbox-rooms[] on every box",
+        "fi-textarea-message -> fi-text-message (unknown type is dropped)",
+        "fi-number-budget with decimal placeholder -> fi-text-budget (form-data numbers are cut to integers)",
+        "fi-file-photos multiple -> fi-file-photos[]",
+        "fi-sender-phone with a local placeholder: flagged, moved to fi-text-phone or kept with a + format note",
+        "Form ID abc12def345 kept; a synchronous guard and disabled button with finally added",
+        "success decided by data.hashId; the raw error.message is no longer shown to visitors",
+        "the redirect to redirectUrl is raised in the plan (kept only if the user wants it)"
+      ]
+    }
+  ]
+}

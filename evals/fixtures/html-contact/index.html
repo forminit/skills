@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Northwind Studio — Contact</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="logo">Northwind Studio</a>
+    <form class="search" action="/search" method="get" role="search">
+      <input type="search" name="q" placeholder="Search">
+    </form>
+  </header>
+
+  <main class="container">
+    <h1 class="title">Start a project</h1>
+    <p class="lead">Tell us about your project and we will reply within two business days.</p>
+
+    <form id="project-form" class="card form-grid" novalidate>
+      <label class="field">
+        <span class="label">Your name</span>
+        <input class="input" type="text" name="name" required>
+      </label>
+      <label class="field">
+        <span class="label">Email</span>
+        <input class="input" type="email" name="email" required>
+      </label>
+      <label class="field">
+        <span class="label">Phone</span>
+        <input class="input" type="tel" name="phone" placeholder="(555) 010-1234">
+      </label>
+      <label class="field">
+        <span class="label">Company</span>
+        <input class="input" type="text" name="company">
+      </label>
+      <label class="field">
+        <span class="label">Website</span>
+        <input class="input" type="url" name="website" placeholder="https://">
+      </label>
+      <label class="field">
+        <span class="label">Project type</span>
+        <select class="input" name="project_type" required>
+          <option value="">Choose one</option>
+          <option value="website">New website</option>
+          <option value="redesign">Redesign</option>
+          <option value="app">Web app</option>
+        </select>
+      </label>
+      <fieldset class="field">
+        <legend class="label">Budget</legend>
+        <label class="choice"><input type="radio" name="budget" value="under-10k"> Under $10k</label>
+        <label class="choice"><input type="radio" name="budget" value="10-50k"> $10k to $50k</label>
+        <label class="choice"><input type="radio" name="budget" value="50k-plus"> $50k+</label>
+      </fieldset>
+      <fieldset class="field">
+        <legend class="label">Services</legend>
+        <label class="choice"><input type="checkbox" name="services" value="design"> Design</label>
+        <label class="choice"><input type="checkbox" name="services" value="development"> Development</label>
+        <label class="choice"><input type="checkbox" name="services" value="seo"> SEO</label>
+      </fieldset>
+      <label class="field">
+        <span class="label">Launch date</span>
+        <input class="input" type="date" name="launch_date">
+      </label>
+      <label class="field field-wide">
+        <span class="label">Project details</span>
+        <textarea class="input" name="message" rows="6" required></textarea>
+      </label>
+      <label class="field field-wide">
+        <span class="label">Brief or moodboard (PDF or images)</span>
+        <input class="input" type="file" name="attachment" accept=".pdf,image/*">
+      </label>
+      <label class="choice field-wide">
+        <input type="checkbox" name="newsletter"> Send me the monthly studio newsletter
+      </label>
+      <div class="actions field-wide">
+        <button class="button" type="submit">Send request</button>
+        <p class="form-message" id="form-message" aria-live="polite"></p>
+      </div>
+    </form>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

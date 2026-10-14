@@ -1,0 +1,7 @@
+.wrap { max-width: 640px; margin: 0 auto; padding: 40px 16px; font-family: Georgia, serif; }
+.f { display: grid; gap: 14px; }
+.f label { display: grid; gap: 6px; font-size: 15px; }
+.f input, .f select, .f textarea { padding: 10px; border: 1px solid #c8bfb0; border-radius: 6px; background: #fffdf8; }
+.stars { display: flex; gap: 12px; }
+.cta { background: #2f4f4f; color: #fff; padding: 12px 18px; border: 0; border-radius: 6px; }
+.note { font-style: italic; }

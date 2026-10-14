@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Peak Plumbing — Get a quote</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <main class="wrap">
+    <h1>Get a free quote</h1>
+    <form id="quote" class="quote-form">
+      <input class="in" name="fi-sender-name" placeholder="Your name" required>
+      <input class="in" name="fi-sender-email" type="email" placeholder="Email" required>
+      <input class="in" name="fi-sender-phone" type="tel" placeholder="Phone">
+      <select class="in" name="fi-select-job">
+        <option>Leak repair</option>
+        <option>New installation</option>
+        <option>Drain cleaning</option>
+      </select>
+      <div class="checks">
+        <label><input type="checkbox" name="fi-checkbox-rooms" value="kitchen"> Kitchen</label>
+        <label><input type="checkbox" name="fi-checkbox-rooms" value="bathroom"> Bathroom</label>
+        <label><input type="checkbox" name="fi-checkbox-rooms" value="basement"> Basement</label>
+      </div>
+      <input class="in" name="fi-number-budget" placeholder="Budget (e.g. 1500.50)">
+      <textarea class="in" name="fi-textarea-message" placeholder="Describe the problem"></textarea>
+      <input class="in" type="file" name="fi-file-photos" multiple accept="image/*">
+      <button class="go" type="submit">Get my quote</button>
+      <p class="msg"></p>
+    </form>
+  </main>
+  <script src="https://forminit.com/sdk/v1/forminit.js"></script>
+  <script>
+    const forminit = new Forminit();
+    const quote = document.getElementById("quote");
+    quote.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const { data, redirectUrl, error } = await forminit.submit("abc12def345", new FormData(quote));
+      if (data) {
+        window.location.href = redirectUrl;
+      } else {
+        quote.querySelector(".msg").textContent = error.message;
+      }
+    });
+  </script>
+</body>
+</html>

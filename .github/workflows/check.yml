@@ -1,0 +1,31 @@
+name: Check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Spec, size, link and fact-sync checks; fails if prompts/examples is stale.
+      - run: npm run check
+
+      # What `npx skills add forminit/skills` will see: exactly one skill.
+      # NO_COLOR keeps the count plain text, so the grep can match it.
+      - run: |
+          npx -y skills@1.7.2 add ./ --list > skills-list.txt 2>&1
+          cat skills-list.txt
+          grep -q "Found 1 skill" skills-list.txt
+        env:
+          NO_COLOR: "1"

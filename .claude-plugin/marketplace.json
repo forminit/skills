@@ -1,0 +1,19 @@
+{
+  "name": "forminit",
+  "owner": {
+    "name": "Forminit",
+    "email": "info@forminit.com"
+  },
+  "metadata": {
+    "description": "Official Forminit agent skills: connect any website or app form to the Forminit form backend."
+  },
+  "plugins": [
+    {
+      "name": "forminit",
+      "description": "Connect an existing form to Forminit, or fix a Forminit integration. Detects the stack, maps inputs to fi-* field names, wires the forminit SDK, and keeps the existing design and logic.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/forminit-setup"]
+    }
+  ]
+}

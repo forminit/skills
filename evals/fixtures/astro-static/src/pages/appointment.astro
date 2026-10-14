@@ -1,0 +1,49 @@
+---
+import Base from "../layouts/Base.astro";
+const services = ["Cleaning", "Whitening", "Check-up", "Emergency"];
+---
+<Base title="Book an appointment | Lumen Dental">
+  <main class="booking">
+    <h1>Book an appointment</h1>
+    <form id="booking-form" class="booking-form">
+      <label>Full name <input name="full_name" required /></label>
+      <label>Email <input name="email" type="email" required /></label>
+      <label>Phone <input name="phone" type="tel" required /></label>
+      <label>Date of birth <input name="dob" type="date" /></label>
+      <label>Preferred day and time <input name="preferred_time" type="datetime-local" /></label>
+      <label>Service
+        <select name="service">
+          {services.map((s) => <option value={s.toLowerCase()}>{s}</option>)}
+        </select>
+      </label>
+      <fieldset>
+        <legend>New patient?</legend>
+        <label><input type="radio" name="new_patient" value="yes" /> Yes</label>
+        <label><input type="radio" name="new_patient" value="no" checked /> No</label>
+      </fieldset>
+      <label>Insurance card (front and back) <input type="file" name="insurance" accept="image/*,.pdf" multiple /></label>
+      <label>Notes <textarea name="notes"></textarea></label>
+      <label class="consent"><input type="checkbox" name="sms_ok" value="1" /> Text me appointment reminders</label>
+      <button type="submit" class="book-btn">Request appointment</button>
+      <p class="booking-status" hidden></p>
+    </form>
+  </main>
+</Base>
+
+<script>
+  const form = document.getElementById("booking-form") as HTMLFormElement;
+  const status = form.querySelector(".booking-status") as HTMLElement;
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    // TODO: hook up to a form backend
+    status.hidden = false;
+    status.textContent = "Thanks! We will call you to confirm.";
+  });
+</script>
+
+<style>
+  .booking { max-width: 600px; margin: 0 auto; padding: 40px 16px; }
+  .booking-form { display: grid; gap: 12px; }
+  .book-btn { background: #0ea5e9; color: white; border: none; padding: 12px 16px; border-radius: 10px; }
+  .booking-status { color: #0369a1; }
+</style>

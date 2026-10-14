@@ -1,0 +1,16 @@
+:root { --brand: #0f5132; --ink: #1d232a; --muted: #5b6672; }
+body { font-family: system-ui, sans-serif; color: var(--ink); margin: 0; }
+.site-header { display: flex; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid #e5e7eb; }
+.container { max-width: 760px; margin: 3rem auto; padding: 0 1rem; }
+.title { font-size: 2.25rem; margin-bottom: .5rem; }
+.lead { color: var(--muted); }
+.card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 2rem; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.5rem; }
+.field { display: flex; flex-direction: column; gap: .35rem; border: 0; padding: 0; margin: 0; }
+.field-wide { grid-column: 1 / -1; }
+.label { font-weight: 600; font-size: .9rem; }
+.input { border: 1px solid #cbd5e1; border-radius: 8px; padding: .6rem .75rem; font: inherit; }
+.choice { display: flex; gap: .5rem; align-items: center; }
+.button { background: var(--brand); color: white; border: 0; border-radius: 8px; padding: .75rem 1.5rem; font-weight: 600; }
+.button:disabled { opacity: .6; }
+.form-message { color: var(--muted); min-height: 1.25rem; }

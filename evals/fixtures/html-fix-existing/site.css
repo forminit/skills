@@ -1,0 +1,5 @@
+.wrap { max-width: 560px; margin: 40px auto; font-family: Arial, sans-serif; }
+.quote-form { display: grid; gap: 10px; }
+.in { padding: 10px; border: 1px solid #999; }
+.go { background: #d97706; color: #fff; border: 0; padding: 12px; font-weight: bold; }
+.msg { color: #b91c1c; }

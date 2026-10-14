@@ -14,7 +14,14 @@ import { useRef, useState } from "react";
 import type { SyntheticEvent } from "react";
 import { Forminit } from "forminit";
 
+// Forminit form: inputs are named fi-{type}-{name}. Rules: https://forminit.com/setup.md
 const FORM_ID = "abc12def345"; // the Form ID from the request
+// Messages visitors see: write them in the page's language
+const ERRORS: Record<string, string> = {
+  FI_RULES_PHONE_INVALID: "Please enter a valid phone number with the country code, like +1 415 555 0123.",
+  FI_SCHEMA_FORMAT_EMAIL: "Please enter a valid email address.",
+  TOO_MANY_REQUESTS: "Please wait a few seconds and try again.",
+};
 const forminit = new Forminit();
 
 export function ContactForm() {
@@ -43,9 +50,7 @@ export function ContactForm() {
       const { data, error } = await forminit.submit(FORM_ID, fd);
       if (error || typeof data?.hashId !== "string") {
         console.error("Forminit:", error ?? data);
-        return setStatus(error?.error === "TOO_MANY_REQUESTS"
-          ? "Please wait a few seconds and try again."
-          : "Something went wrong. Please try again.");
+        return setStatus((error && ERRORS[error.error]) || "Something went wrong. Please try again.");
       }
       // the existing success behavior, unchanged (form.reset() only if it already reset)
     } catch (err) {
@@ -97,7 +102,7 @@ const onValid = async (values: FormValues) => {
     const { data, error } = await forminit.submit(FORM_ID, fd);
     if (error || typeof data?.hashId !== "string") {
       console.error("Forminit:", error ?? data);
-      return setStatus(error?.error === "TOO_MANY_REQUESTS" ? "Please wait a few seconds and try again." : "Something went wrong. Please try again."); // or the form's toast; never error.message
+      return setStatus((error && ERRORS[error.error]) || "Something went wrong. Please try again."); // or the form's toast; never error.message
     }
     // the existing success behavior (toast, reset()) unchanged
   } catch (err) {

@@ -16,7 +16,14 @@ Static pages, CMS templates, static generators (Jekyll, Hugo, Eleventy) and any 
 <script src="https://forminit.com/sdk/v1/forminit.js"></script>
 <script>
   (() => {
+    // Forminit form: inputs are named fi-{type}-{name}. Rules: https://forminit.com/setup.md
     const FORM_ID = "abc12def345"; // the Form ID from the request
+    // Messages visitors see: write them in the page's language
+    const ERRORS = {
+      FI_RULES_PHONE_INVALID: "Please enter a valid phone number with the country code, like +1 415 555 0123.",
+      FI_SCHEMA_FORMAT_EMAIL: "Please enter a valid email address.",
+      TOO_MANY_REQUESTS: "Please wait a few seconds and try again.",
+    };
     const form = document.getElementById("contact-form");
     const buttons = form.querySelectorAll('button[type="submit"], button:not([type]), input[type="submit"]');
     const status = form.querySelector("[data-form-status]"); // the form's existing message element (outside the form: getElementById)
@@ -47,9 +54,7 @@ Static pages, CMS templates, static generators (Jekyll, Hugo, Eleventy) and any 
         const { data, error } = await forminit.submit(FORM_ID, fd);
         if (error || typeof data?.hashId !== "string") {
           console.error("Forminit:", error ?? data);
-          status.textContent = error?.error === "TOO_MANY_REQUESTS"
-            ? "Please wait a few seconds and try again."
-            : "Something went wrong. Please try again.";
+          status.textContent = (error && ERRORS[error.error]) || "Something went wrong. Please try again.";
           return;
         }
         // the existing success behavior, unchanged (form.reset() only if it already reset)

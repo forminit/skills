@@ -5,11 +5,11 @@ license: MIT
 compatibility: Any coding agent that can read and edit project files. A shell and network access are optional.
 metadata:
   author: Forminit
-  version: "1.2.0"
+  version: "1.3.0"
   homepage: https://forminit.com/docs
 ---
 
-# Forminit setup (forminit-setup 1.2.0)
+# Forminit setup (forminit-setup 1.3.0)
 
 Connect one form in this project to [Forminit](https://forminit.com), a hosted form backend. Forminit stores each submission and shows it in the user's dashboard at https://app.forminit.com. The project keeps its own form UI.
 
@@ -83,14 +83,14 @@ Will change: input names, the submit handler (sends to Forminit, disables Send w
 Will not change: layout, classes, styles, text, validation or any other code. No test submission without your OK.
 
 1. Attachment: one file (fi-file-attachment) or multiple files from this input (fi-file-attachment[] plus the multiple attribute)? [one file]
-2. Phone (sent as fi-sender-phone, which needs a +country code): keep the input as it is so visitors type +44..., add a dial-code dropdown (which countries?), add a phone input library with a country picker (react-phone-number-input, a new dependency), or send any format as plain text (fi-text-phone)? [as it is]
+2. Phone: which countries should visitors pick from? Then a phone input library with flags and a country search (react-phone-number-input, the best experience, a new dependency), or a +44 / +1 dial-code dropdown before the input? [dropdown]
 
 Reply "yes" for the defaults in brackets, or answer by number.
 ```
 
 Ask only what applies, each with a default:
 - **Every file input, always:** one file or multiple files from that input. Default: what the markup does now (`multiple` present means multiple).
-- **Phone** input that does not already produce international numbers (no phone library, no dial-code dropdown): keep it, visitors type the +country code (default); add a dial-code dropdown with the countries the user names; add a phone input library with a country picker (a new dependency); or plain text in any format (`fi-text-*`).
+- **Phone** input you add, or an existing one with no country picker: which countries (skip if the user named them), then a phone input library with a country picker (`references/phone.md`; the best experience, a new dependency) or a dial-code dropdown before the input. Default: the dropdown for a phone input you add; keeping an existing input as it is (visitors type the +country code). Plain text (`fi-text-*`) only on request.
 - **Several forms, app-logic handler, or no form**: as in section 2.
 - **CSP** found: add `https://forminit.com` to `connect-src` (and `script-src` when using the script tag). Leave a replaced service's host and list it in the hand-off. Default: yes.
 - **E2E tests** that submit this form: they will send real submissions. Default: list them; mock `https://forminit.com/f/**` only if the user agrees.
@@ -134,17 +134,7 @@ Rules Forminit enforces. Each break rejects the whole submission, or silently dr
 - **Unknown types** (`fi-textarea-*`, `fi-message-*`, `fi-hidden-*`, `fi-tel-*`) and names without the `fi-` prefix are silently dropped. A type without a name (`fi-email`) rejects the submission.
 - **Repeated names need `[]`.** Without it only the last value arrives (checkbox groups, multi-selects, multiple files). Never put `[]` on any other type.
 - **Reserved names.** Never use `sender`, `tracking`, `order`, `location`, `schedule`, `id`, `username`, `password`, `cardNumber`, `card_number`, `card_no`, `cvv`, `cvv2` or `cvc` (any case) as the `{name}`: add a word (`fi-text-order_notes`).
-- **Phone rule.** `fi-sender-phone` and `fi-phone-*` must be real numbers with a `+` and country code. A local number passes only with a country hint in the same submission: `fi-sender-phone` uses `fi-sender-country` or a `fi-country-*` field, `fi-phone-*` only a `fi-country-*` field. Use `fi-sender-phone` for the submitter's phone, including a phone input you add: a visitor who types a local number gets the phone message from step 8 and can fix it. Use `fi-text-*` only when the user wants any format accepted. On an existing input, never add a country field, a `required` rule, a `pattern`, a placeholder or other logic to make a phone value pass, and never guess country codes or route numbers by regex. A phone input you add yourself gets `type="tel"` and an international placeholder such as `+1 415 555 0123`. If the user picked one in the plan:
-  - **Dial-code dropdown:** a `<select data-dial-code>` with no `name`, options like `<option value="+44">+44</option>` for the countries the user named, placed before the phone input with the form's existing input classes. After building the FormData, combine the two; this is the only allowed rewrite of a phone value:
-
-    ```js
-    const dial = form.querySelector("[data-dial-code]")?.value;
-    const phone = fd.get("fi-sender-phone");
-    if (dial && typeof phone === "string" && phone.trim() && !phone.trim().startsWith("+")) {
-      fd.set("fi-sender-phone", dial + phone.replace(/\D/g, "").replace(/^0/, "")); // drop the local leading 0
-    }
-    ```
-  - **Phone library:** add it with the package manager and send its international value as `fi-sender-phone`: `react-phone-number-input` gives `+14155550123` as its `value`; `intl-tel-input` (other stacks) gives it from `iti.getNumber()` once its utils script is loaded.
+- **Phone rule.** `fi-sender-phone` and `fi-phone-*` must be real numbers with a `+` and country code. A local number passes only with a country hint in the same submission: `fi-sender-phone` uses `fi-sender-country` or a `fi-country-*` field, `fi-phone-*` only a `fi-country-*` field. Use `fi-sender-phone` for the submitter's phone; `fi-text-*` only when the user wants any format accepted. A phone library or dial-code dropdown (section 3) sends the international number for the visitor: build it with `references/phone.md`. Never add hint text under a phone input. On an existing input, never add a country field, a `required` rule, a `pattern`, a placeholder or other logic to make a phone value pass, and never guess country codes or route numbers by regex.
 - **Name rule.** Sender names allow only letters, digits, spaces, `-`, `.`, `_` and the straight `'`: `&`, commas, parentheses, `@` and the iPhone's curly `’` (`O’Brien`) reject the whole submission. Step 3 below straightens apostrophes.
 - **Empty values are fine.** Forminit ignores empty inputs and untouched file inputs. Send the FormData as built; never filter or `fd.delete` empty entries, which wipes a whole `[]` group.
 - **Keep native validation** (`type="email"`, `required`, `pattern`): it is what stops bad values before they reach Forminit.

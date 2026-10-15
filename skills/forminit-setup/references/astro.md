@@ -16,12 +16,20 @@
 
   // Forminit form: inputs are named fi-{type}-{name}. Rules: https://forminit.com/setup.md
   const FORM_ID = "abc12def345"; // the Form ID from the request
-  // Messages visitors see: write them in the page's language
-  const ERRORS: Record<string, string> = {
-    FI_RULES_PHONE_INVALID: "Please enter a valid phone number with the country code, like +1 415 555 0123.",
-    FI_SCHEMA_FORMAT_EMAIL: "Please enter a valid email address.",
-    TOO_MANY_REQUESTS: "Please wait a few seconds and try again.",
+  // One message per field Forminit validates, in the page's language. Keys are Forminit's
+  // field names: sender.<name> for fi-sender-*, else the {name} of fi-{type}-{name}.
+  const FIELD_ERRORS: Record<string, string> = {
+    "sender.fullName": "Please use only letters, spaces, hyphens, apostrophes and periods.",
+    "sender.email": "Please enter a valid email address.",
+    "sender.phone": "Please enter a valid phone number with the country code.",
   };
+  // Forminit names the failing field in error.fieldName or, today, as the first quoted word of error.message
+  function errorText(error?: { error?: string; fieldName?: string; message?: string }): string {
+    const field = error?.fieldName ?? /['"]([^'"]+)['"]/.exec(error?.message ?? "")?.[1];
+    if (field && FIELD_ERRORS[field]) return FIELD_ERRORS[field];
+    if (error?.error === "TOO_MANY_REQUESTS") return "Please wait a few seconds and try again.";
+    return "Something went wrong. Please try again.";
+  }
   const forminit = new Forminit();
 
   function bind(form: HTMLFormElement) {
@@ -56,7 +64,7 @@
         const { data, error } = await forminit.submit(FORM_ID, fd);
         if (error || typeof data?.hashId !== "string") {
           console.error("Forminit:", error ?? data);
-          status.textContent = (error && ERRORS[error.error]) || "Something went wrong. Please try again.";
+          status.textContent = errorText(error);
           return;
         }
         // the existing success behavior, unchanged (form.reset() only if it already reset)

@@ -4,7 +4,7 @@ Read this when a Forminit form already exists in the code and fails, or when the
 
 ## Error codes
 
-The SDK returns them as `error.error`. Any validation error rejects the whole submission: nothing is stored.
+The SDK returns them as `error.error`. For a field error, the failing field is the first quoted word of `error.message` (`'sender.fullName'`, `"sender.phone"`, `'website'`). Any validation error rejects the whole submission: nothing is stored.
 
 | Code | HTTP | Cause | Fix |
 |---|---|---|---|

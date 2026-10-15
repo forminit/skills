@@ -5,11 +5,11 @@ license: MIT
 compatibility: Any coding agent that can read and edit project files. A shell and network access are optional.
 metadata:
   author: Forminit
-  version: "1.3.1"
+  version: "1.4.0"
   homepage: https://forminit.com/docs
 ---
 
-# Forminit setup (forminit-setup 1.3.1)
+# Forminit setup (forminit-setup 1.4.0)
 
 Connect one form in this project to [Forminit](https://forminit.com), a hosted form backend. Forminit stores each submission and shows it in the user's dashboard at https://app.forminit.com. The project keeps its own form UI.
 
@@ -161,7 +161,20 @@ Use the official SDK. Bundled apps add the npm package `forminit` and `import { 
 5. If the form has file inputs, stop with a message when the files total more than 24 MB (`24 * 1024 * 1024`): Forminit's 25 MB limit counts the whole request.
 6. `const { data, error } = await forminit.submit(FORM_ID, fd)` inside `try`. In `finally`, clear the flag and re-enable the button.
 7. Success only when there is no `error` and `typeof data?.hashId === "string"`. Then run the form's existing success behavior. Reset the form only if the code already did.
-8. On error keep the user's input and log `error` to the console. `error.error` holds the code. Show a specific message, in the page's language, for errors the visitor can fix: `FI_RULES_PHONE_INVALID` (a phone number with its country code), `FI_SCHEMA_FORMAT_EMAIL` (a valid email) and `TOO_MANY_REQUESTS` (wait a few seconds; never retry automatically). For every other error show the form's existing generic error message. Never show `error.message`: it is English developer text.
+8. On error keep the user's input and log `error` to the console. Show a message, in the page's language, for the field that failed. Forminit names it in `error.fieldName`, or today as the first quoted word of `error.message` (`sender.fullName` for `fi-sender-fullName`, `website` for `fi-url-website`); the stack file's `errorText()` reads it. Give `FIELD_ERRORS` one entry for every field in this form that Forminit validates:
+
+   | Field | Message (in the page's language) |
+   |---|---|
+   | sender names | Please use only letters, spaces, hyphens, apostrophes and periods. |
+   | email | Please enter a valid email address. |
+   | phone | Please enter a valid phone number with the country code. |
+   | URL | Please enter a full web address, like https://example.com. |
+   | number | Please enter a whole number. |
+   | date | Please enter a valid date. |
+   | country | Please choose a country from the list. |
+   | rating | Please choose a rating from 1 to 5. |
+
+   If the form already has a per-field error element, show the message there and focus the field; otherwise use its status message. `TOO_MANY_REQUESTS`: ask the visitor to wait a few seconds, and never retry automatically. Any other error: the form's generic error message. Never show `error.message` itself: it is English developer text that repeats what the visitor typed.
 9. Never navigate to `redirectUrl` (it comes with every success) unless the user asks for it. A kept redirect navigates only to a non-empty `redirectUrl` and leaves the button disabled while navigating.
 
 Feedback UI: reuse the form's existing success and error display (state, toast, message element). Show a hidden message element the way the existing code does. Only if it has none, add one `<p role="status">` after the button that uses a text class the form already uses. No new CSS, spinners or dependencies besides `forminit`.

@@ -2,7 +2,7 @@
 
 Read this when the plan's phone answer is a phone library or a dial-code dropdown. Use the countries the user named, the first one as the default. `fi-sender-phone` must arrive in international form (`+447700900123`); both options below take care of that, so the visitor never types a `+`.
 
-Never add hint text such as "Include your country code" under the input. A placeholder shows the default country's local format, like `07700 900123` for the UK.
+Never add hint text such as "Include your country code" under the input. A placeholder shows the selected country's local format, like `07700 900123` for the UK (`intl-tel-input` sets it itself).
 
 ## Phone library (the better experience)
 
@@ -37,6 +37,7 @@ const iti = intlTelInput(phoneInput, {
   onlyCountries: ["gb", "us"], // the countries the user named, lowercase
   initialCountry: "gb",
   separateDialCode: true, // shows +44 next to the flag
+  placeholderNumberPolicy: "AGGRESSIVE", // always an example number for the selected country
   loadUtils: () => import("intl-tel-input/utils"),
 });
 

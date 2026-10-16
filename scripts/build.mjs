@@ -35,7 +35,7 @@ const examples = {
     hasAuthorizedDomains: true,
     hasCustomRedirect: true,
   }),
-  "docs.txt": renderSetupPrompt({ ref: "docs" }),
+  "docs.txt": renderSetupPrompt(),
 };
 
 const examplesDir = join(root, "prompts/examples");

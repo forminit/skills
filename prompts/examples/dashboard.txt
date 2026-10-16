@@ -4,5 +4,5 @@ Form ID: abc12def345
 
 Get the Forminit setup guide, then follow it:
 1. If you can run terminal commands, install it: npx skills add forminit/skills --skill forminit-setup -y. Then read .agents/skills/forminit-setup/SKILL.md (or .claude/skills/forminit-setup/SKILL.md).
-2. Otherwise read https://forminit.com/setup.md?ref=dashboard in full.
+2. Otherwise read https://forminit.com/setup.md in full.
 3. If you can do neither, stop and tell me.

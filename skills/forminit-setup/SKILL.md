@@ -5,11 +5,11 @@ license: MIT
 compatibility: Any coding agent that can read and edit project files. A shell and network access are optional.
 metadata:
   author: Forminit
-  version: "1.4.0"
-  homepage: https://forminit.com/docs
+  version: "1.4.1"
+  homepage: https://forminit.com/docs/
 ---
 
-# Forminit setup (forminit-setup 1.4.0)
+# Forminit setup (forminit-setup 1.4.1)
 
 Connect one form in this project to [Forminit](https://forminit.com), a hosted form backend. Forminit stores each submission and shows it in the user's dashboard at https://app.forminit.com. The project keeps its own form UI.
 

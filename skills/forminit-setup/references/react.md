@@ -1,6 +1,6 @@
 # React
 
-Vite, React Router, Remix, TanStack Start, Gatsby and Create React App. Lovable and Bolt projects are usually Vite + React with shadcn/ui and react-hook-form. Next.js has its own file: `nextjs.md`.
+Vite, React Router, Remix, TanStack Start, Gatsby and Create React App. Lovable projects created since May 2026 are TanStack Start (older ones Vite + React); Bolt projects are usually Vite + React. Both use shadcn/ui and react-hook-form. Next.js has its own file: `nextjs.md`.
 
 ## Where the code goes
 

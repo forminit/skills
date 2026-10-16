@@ -16,7 +16,7 @@ Scope, on purpose: browser forms submitted with the SDK. Protected mode, server-
 
 ## Rules
 
-- **One copy of each fact.** `SKILL.md` holds the rules and the field table. Stack references hold only stack-specific code and pitfalls. The setup prompt (`prompts/setup-prompt.mjs`) is short: it carries the Form ID, the form's settings, a pointer to the guide and four rules that lose data or break the user's requirements if missed. Keep it that way; details belong in `SKILL.md`. `scripts/check.mjs` keeps the repeated facts in sync and enforces the size budget.
+- **One copy of each fact.** `SKILL.md` holds the rules and the field table. Stack references hold only stack-specific code and pitfalls. The setup prompt (`prompts/setup-prompt.mjs`) is one prompt for every agent and builder: the Form ID, the form's settings, and a route to the guide (install the skill if the agent has a terminal, else read forminit.com/setup.md, else stop). It carries no field rules; those belong in `SKILL.md`. `scripts/check.mjs` keeps the repeated facts in sync and enforces the size budget.
 - **Frontmatter** uses only the spec keys (`name`, `description`, `license`, `compatibility`, `metadata`). `name` equals the folder name. The description has no `<` or `>` and stays under 1024 characters.
 - **Size:** `SKILL.md` stays under 500 lines and about 5000 tokens. References stay one level deep.
 - **Example Form ID** is always `abc12def345`. Never write placeholders like `YOUR_FORM_ID`.

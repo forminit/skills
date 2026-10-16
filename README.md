@@ -30,9 +30,9 @@ claude plugin install forminit@forminit
 
 Then ask your agent: "Connect my contact form to Forminit, Form ID abc12def345", or run `/forminit-setup abc12def345`.
 
-## Without installing
+## From the dashboard
 
-Every form's page in the [Forminit dashboard](https://app.forminit.com) has a setup prompt with the Form ID filled in. Paste it into any agent or app builder (Lovable, Bolt, v0, Replit). It points the agent to the same guide, served at https://forminit.com/setup.md, and repeats your four requirements. If the agent cannot load the guide, it stops and asks you to install the skill.
+Every form's page in the [Forminit dashboard](https://app.forminit.com) shows one setup prompt with the Form ID filled in, for any agent or app builder. An agent that can run terminal commands installs this skill and follows it. An app builder without a terminal (Lovable, Bolt, v0, Replit) reads the same guide from https://forminit.com/setup.md. An agent that can do neither stops and tells you.
 
 ## Repository layout
 

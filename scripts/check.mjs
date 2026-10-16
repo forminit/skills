@@ -69,13 +69,18 @@ for (const [file, text] of allDocs) {
 const prompt = renderSetupPrompt({ formId: "abc12def345" });
 const docsPrompt = renderSetupPrompt({ ref: "docs" });
 const full = renderSetupPrompt({ formId: "abc12def345", hasAuthorizedDomains: true, hasCustomRedirect: true });
-for (const fact of ["fi-sender-email", "fi-sender-fullName", "fi-sender-phone", "fi-sender-company", "fi-checkbox-services[]"]) {
-  if (!prompt.includes(fact)) fail(`prompt: missing "${fact}"`);
-  if (!skill.includes(fact)) fail(`SKILL.md: missing "${fact}"`);
-}
-for (const must of ["https://forminit.com/setup.md?ref=dashboard", "one file or multiple", "Disable the submit button", "npx skills add forminit/skills", "Form ID: abc12def345"]) {
+// The prompt carries no field rules (the guide does); it must route every kind of agent to the guide
+for (const must of [
+  "Form ID: abc12def345",
+  "npx skills add forminit/skills --skill forminit-setup -y",
+  ".agents/skills/forminit-setup/SKILL.md",
+  ".claude/skills/forminit-setup/SKILL.md",
+  "https://forminit.com/setup.md?ref=dashboard",
+  "stop and tell me",
+]) {
   if (!prompt.includes(must)) fail(`prompt: missing "${must}"`);
 }
+if (!skill.includes(`name: ${skillName}`)) fail("SKILL.md: the install command's --skill must match the skill name");
 for (const wrong of ["getform", "Getform", "YOUR_FORM_ID", "Endpoint:", "res.ok", "curl"]) {
   if (prompt.includes(wrong) || docsPrompt.includes(wrong) || full.includes(wrong)) fail(`prompt: must not contain "${wrong}"`);
 }
@@ -84,8 +89,8 @@ if (!docsPrompt.includes("?ref=docs")) fail("docs prompt: ref must be docs");
 if (renderSetupPrompt({ formId: "<script>" }) !== null) fail("prompt: an invalid Form ID must render nothing");
 if (!renderSetupPrompt({ formId: "abc12def345", ref: '"; rm -rf ~; "' }).includes("?ref=dashboard ")) fail("prompt: an unknown ref must fall back to dashboard");
 if (!FORM_ID_PATTERN.test("abcdefgh") || !FORM_ID_PATTERN.test("abc12def345")) fail("prompt: Form ID pattern rejects real IDs");
-if (prompt.length > 1800) fail(`prompt: ${prompt.length} characters, keep it under 1800`);
-if (full.length > 3000) fail(`prompt: ${full.length} characters with every setting, keep it under 3000`);
+if (prompt.length > 800) fail(`prompt: ${prompt.length} characters, keep it under 800`);
+if (full.length > 1400) fail(`prompt: ${full.length} characters with every setting, keep it under 1400`);
 for (const [label, text] of [["prompt", prompt], ["docs prompt", docsPrompt], ["full prompt", full]]) {
   if (/[<>]/.test(text)) fail(`${label}: unexpected markup`);
 }

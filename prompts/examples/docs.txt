@@ -1,11 +1,8 @@
-Connect a form in this project to Forminit (forminit.com), my form backend. Do not ask me to add fields in a dashboard (the fi-* input names are the fields) or to give an API key.
+Connect a form in this project to Forminit (forminit.com), my form backend.
 
-Form ID: ask me for it in your plan, before writing code (it is on my form's page at app.forminit.com). In the code, FORM_ID stands for that ID as a string literal (it is public, so no environment variable). Without it, stop after the plan; never use a placeholder.
+Form ID: ask me for it before writing code (it is on my form's page at app.forminit.com).
 
-Use the forminit-setup skill if it is installed. Otherwise read https://forminit.com/setup.md?ref=docs in full and follow it. If you cannot load it, stop and tell me, so I can install the skill with: npx skills add forminit/skills
-
-My requirements:
-1. Keep my design and logic: change only input names and the submit code.
-2. Scan the project, then send me one plan (each input and its Forminit name) with your questions, and wait for my answer. For every file input, ask me: one file or multiple files?
-3. Disable the submit button while sending, so a double click sends once.
-4. Checkbox groups and multi-selects end in [] (fi-checkbox-services[]). Sender fields are fi-sender-email, fi-sender-fullName (or fi-sender-firstName and fi-sender-lastName), fi-sender-phone and fi-sender-company; any other fi-sender-* name rejects the whole submission.
+Get the Forminit setup guide, then follow it:
+1. If you can run terminal commands, install it: npx skills add forminit/skills --skill forminit-setup -y. Then read .agents/skills/forminit-setup/SKILL.md (or .claude/skills/forminit-setup/SKILL.md).
+2. Otherwise read https://forminit.com/setup.md?ref=docs in full.
+3. If you can do neither, stop and tell me.

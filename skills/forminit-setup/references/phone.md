@@ -1,6 +1,6 @@
 # Phone input with a country picker
 
-Read this when the plan's phone answer is a phone library or a dial-code dropdown. Use the countries the user named, the first one as the default. `fi-sender-phone` must arrive in international form (`+447700900123`); both options below take care of that, so the visitor never types a `+`.
+Read this when the plan's phone answer is a phone library or a dial-code dropdown. Use the plan's countries (the user's, or by default the site's), the first one preselected. `fi-sender-phone` must arrive in international form (`+447700900123`); both options below take care of that, so the visitor never types a `+`.
 
 Never add hint text such as "Include your country code" under the input. A placeholder shows the selected country's local format, like `07700 900123` for the UK (`intl-tel-input` sets it itself).
 
@@ -15,7 +15,7 @@ import "react-phone-number-input/style.css";
 const [phone, setPhone] = useState<string | undefined>();
 
 <PhoneInput
-  countries={["GB", "US"]} // the countries the user named
+  countries={["GB", "US"]} // the plan's countries
   defaultCountry="GB"
   international
   value={phone}
@@ -34,7 +34,7 @@ import "intl-tel-input/styles";
 
 const phoneInput = form.querySelector('[name="fi-sender-phone"]');
 const iti = intlTelInput(phoneInput, {
-  onlyCountries: ["gb", "us"], // the countries the user named, lowercase
+  onlyCountries: ["gb", "us"], // the plan's countries, lowercase
   initialCountry: "gb",
   separateDialCode: true, // shows +44 next to the flag
   placeholderNumberPolicy: "AGGRESSIVE", // always an example number for the selected country
@@ -49,7 +49,7 @@ Pages without a bundler: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/
 
 ## Dial-code dropdown (no dependency)
 
-A `<select>` with no `name`, one option per country the user named, right before the phone input and in one row with it. Give it the form's existing select or input classes; wrap the pair in a `<div>` with `display: flex` and the form's gap only if no existing class does that.
+A `<select>` with no `name`, one option per country in the plan, right before the phone input and in one row with it. An existing input keeps its own placeholder. Give it the form's existing select or input classes; wrap the pair in a `<div>` with `display: flex` and the form's gap only if no existing class does that.
 
 ```html
 <div class="phone-row">

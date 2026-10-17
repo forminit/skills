@@ -13,7 +13,7 @@
       "baselineRequest": "Connect the project request form on index.html to Forminit (forminit.com). My Form ID is abc12def345.",
       "expect": [
         "name -> fi-sender-fullName; email -> fi-sender-email; company -> fi-sender-company",
-        "phone -> fi-sender-phone by default (the plan may offer fi-text-phone); no country field, pattern or placeholder added to it",
+        "phone -> fi-sender-phone with a dial-code dropdown before it, +1 first (US: the $ budgets and the (555) placeholder); its placeholder kept; no fi-*-country field or pattern added (the plan may offer fi-text-phone)",
         "website (type=url) -> fi-url-website; project_type -> fi-select-project_type; budget radios -> fi-radio-budget (no [])",
         "services checkbox group -> fi-checkbox-services[] on every box",
         "launch_date -> fi-date-launch_date; message textarea -> fi-text-message",
@@ -77,7 +77,7 @@
       "baselineRequest": "Connect the RSVP form in this project to Forminit (forminit.com). My Form ID is abc12def345.",
       "expect": [
         "use:enhance is removed from the form, so only the Forminit browser handler sends",
-        "name -> fi-sender-fullName (or fi-text-name if the plan offered it for several guests); email -> fi-sender-email; phone (its pattern still admits invalid numbers) -> fi-sender-phone or fi-text-phone, or a plan question with either default",
+        "name -> fi-sender-fullName (or fi-text-name if the plan offered it for several guests); email -> fi-sender-email; phone (its pattern still admits invalid numbers) -> fi-sender-phone or fi-text-phone, or a plan question with either default; no dial-code dropdown (its placeholder already asks for a + number)",
         "attending radios -> fi-radio-attending; guests -> fi-number-guests; diet checkboxes -> fi-checkbox-diet[]",
         "song -> fi-text-song; message -> fi-text-message",
         "photo: the plan asks one file or multiple; after the reply it is fi-file-photo[] with multiple",
@@ -92,7 +92,7 @@
       "baselineRequest": "Connect the appointment form in this project to Forminit (forminit.com). My Form ID is abc12def345.",
       "expect": [
         "full_name -> fi-sender-fullName; email -> fi-sender-email",
-        "phone -> fi-sender-phone by default (the plan may offer fi-text-phone); no country field or pattern added",
+        "phone -> fi-sender-phone; no country is clear, so the input stays as it is and the plan leaves the countries as an open question; no country field or pattern added (the plan may offer fi-text-phone)",
         "dob -> fi-date-dob; preferred_time (datetime-local) -> fi-date-preferred_time",
         "service -> fi-select-service; new_patient -> fi-radio-new_patient",
         "insurance (multiple) -> the plan asks; after the reply fi-file-insurance[] with multiple",
@@ -111,7 +111,7 @@
         "fi-textarea-message -> fi-text-message (unknown type is dropped)",
         "fi-number-budget with decimal placeholder -> fi-text-budget (form-data numbers are cut to integers)",
         "fi-file-photos multiple -> fi-file-photos[]",
-        "fi-sender-phone kept (the plan may offer fi-text-phone); no country field added",
+        "fi-sender-phone kept (the plan may offer fi-text-phone); no country field or dial-code dropdown added (fix mode changes only what was asked)",
         "Form ID abc12def345 kept; a synchronous guard and disabled button with finally added",
         "success decided by data.hashId; the raw error.message is no longer shown to visitors",
         "the redirect to redirectUrl is raised in the plan (kept only if the user wants it)"

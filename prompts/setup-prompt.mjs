@@ -22,9 +22,7 @@ export function renderSetupPrompt(options = {}) {
   if (formId !== undefined && formId !== null && !FORM_ID_PATTERN.test(String(formId))) return null;
   const hasId = Boolean(formId);
 
-  const intro = hasId
-    ? "Connect a form in this project to my Forminit form (forminit.com, a form backend)."
-    : "Connect a form in this project to Forminit (forminit.com), my form backend.";
+  const intro = "Connect my form to Forminit (forminit.com, a form backend). If I have no form yet, ask me which fields I want, then create it.";
 
   const idLine = hasId
     ? `Form ID: ${formId}`
@@ -45,7 +43,7 @@ export function renderSetupPrompt(options = {}) {
     ...settings,
     "",
     "Get the Forminit setup guide, then follow it:",
-    "1. If you can run terminal commands, install it: npx skills add forminit/skills --skill forminit-setup -y. Then read .agents/skills/forminit-setup/SKILL.md (or .claude/skills/forminit-setup/SKILL.md).",
+    "1. If you can run terminal commands, install it: npx skills add forminit/skills --skill forminit-setup -a universal claude-code -y. Then read .agents/skills/forminit-setup/SKILL.md.",
     `2. Otherwise read ${GUIDE_URL} in full.`,
     "3. If you can do neither, stop and tell me.",
   ].join("\n");

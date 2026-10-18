@@ -1,17 +1,17 @@
 ---
 name: forminit-setup
-description: "Connects an existing website or app form to Forminit (forminit.com), the headless form backend, or fixes a broken Forminit integration. Works with HTML, React, Next.js, Vue, Nuxt, Svelte, SvelteKit and Astro: maps each input to fi-* field names such as fi-sender-email and fi-checkbox-topics[], wires the submit with the forminit SDK and keeps the existing design and logic. Use when the user mentions Forminit, gives a Forminit Form ID, pastes a Forminit setup prompt, has forminit.com/f/ URLs or fi-* names in code, or hits Forminit errors like FORM_NOT_FOUND. Also use when a contact, lead, quote, booking, RSVP, feedback, waitlist or job application form on a static or AI-built site must deliver submissions without a backend. Not for login, account signup, password, payment or search forms."
+description: "Connects a website or app form to Forminit (forminit.com), the headless form backend, creates one when there is none (a paste-ready HTML form when there is no code to edit), or fixes a broken Forminit integration. Works with HTML, React, Next.js, Vue, Nuxt, Svelte, SvelteKit and Astro: maps each input to fi-* field names such as fi-sender-email and fi-checkbox-topics[], wires the submit with the forminit SDK and keeps the existing design and logic. Use when the user mentions Forminit, gives a Forminit Form ID, pastes a Forminit setup prompt, has forminit.com/f/ URLs or fi-* names in code, or hits Forminit errors like FORM_NOT_FOUND. Also use when a contact, lead, quote, booking, RSVP, feedback, waitlist or job application form on a static or AI-built site must deliver submissions without a backend. Not for login, account signup, password, payment or search forms."
 license: MIT
 compatibility: Any coding agent that can read and edit project files. A shell and network access are optional.
 metadata:
   author: Forminit
-  version: "1.5.0"
+  version: "1.6.0"
   homepage: https://forminit.com/docs/
 ---
 
-# Forminit setup (forminit-setup 1.5.0)
+# Forminit setup (forminit-setup 1.6.0)
 
-Connect one form in this project to [Forminit](https://forminit.com), a hosted form backend. Forminit stores each submission and shows it in the user's dashboard at https://app.forminit.com. The project keeps its own form UI.
+Connect one of the user's forms to [Forminit](https://forminit.com), a hosted form backend, or create one. Forminit stores each submission and shows it in the user's dashboard at https://app.forminit.com. The form keeps its own UI.
 
 Done means: every input reaches Forminit under a valid `fi-*` name, the submit button is disabled while sending, a double click sends once, the user's input survives an error, and the user has been asked to send one test.
 
@@ -37,11 +37,12 @@ Read before you ask. Ask nothing before the plan.
 
 | Found | Do |
 |---|---|
+| No code you can read or edit (a chat without project files) | Your plan asks for the form's code, or for the fields to create (default: full name, email, message) and the platform it goes on. Then give one paste-ready snippet: `references/html.md`, "No code to edit". |
 | Forminit already (`forminit` import or script, `forminit.com/f/`, `fi-*` names) | Fix mode: section 8 |
 | The form already sends somewhere else (an external `action` URL, a `fetch` or SDK call to another form or email service, a `mailto:` action) | Replace only that call. Remove that service's hidden config inputs and list them in the plan. Keep `_gotcha`: it is Forminit's honeypot. |
 | A handler with app logic (database or CRM writes, emails with business rules) | Ask: replace it, or keep it and also send to Forminit after it succeeds. Default: keep both. |
 | A stub (`console.log`, `alert`, `TODO`, an empty `onSubmit`, an `action` going nowhere) | Wire it. |
-| No form | Propose fields (default: full name, email, message) and a placement built from the project's existing components and classes. |
+| No form | Your plan asks which fields to create (default: full name, email, message) and proposes a placement built from the project's existing components and classes. |
 | Several candidate forms | Ask which one, unless the request names it. |
 
 **Pick the stack file** you will read in section 4:
@@ -152,7 +153,7 @@ Inputs without a `name` (React `value`, Vue `v-model`, Svelte `bind:`) are left 
 
 ### Submit contract
 
-Use the official SDK. Bundled apps add the npm package `forminit` and `import { Forminit } from "forminit"` (named export, ESM only). Pages without a bundler use `<script src="https://forminit.com/sdk/v1/forminit.js"></script>` and the global `Forminit`. Call it in the browser, inside the form's submit handler. Keep the comment above `FORM_ID` from the stack file's handler (`// Forminit form: inputs are named fi-{type}-{name}. Rules: https://forminit.com/setup.md`): it tells a later session, with or without this skill, how to name a new field. Your stack file has the full handler. In every stack:
+Use the official SDK. Bundled apps add the npm package `forminit` and `import { Forminit } from "forminit"` (named export, ESM only). Pages without a bundler use `<script src="https://forminit.com/sdk/v1/forminit.js"></script>` and the global `Forminit`. Call it in the browser, inside the form's submit handler. Keep the comment above `FORM_ID` from the stack file's handler: it tells a later session how to name a new field. Your stack file has the full handler. In every stack:
 
 1. Keep one submit path: adapt the existing handler, call `event.preventDefault()` first, and never add a second listener.
 2. Return early if a send is already running. The flag must be synchronous (a variable or ref, not render state alone).

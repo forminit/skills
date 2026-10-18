@@ -82,6 +82,16 @@ Static pages, CMS templates, static generators (Jekyll, Hugo, Eleventy) and any 
 - Use the form's existing message element and wording; if it sits outside the `<form>`, select it with `document.getElementById(...)`. Only if there is none, add `<p data-form-status role="status"></p>` after the button with a text class the form already uses. Write messages with `textContent`, never `innerHTML`.
 - Submit buttons that carry their own `name` and `value` (two buttons with different actions): `new FormData(form, event.submitter)` includes the clicked one.
 
+## No code to edit
+
+When you cannot read or edit the site's files (a chat, or a site builder without code access), give one block the user pastes into an HTML or embed block:
+
+1. The form, with an `id`. If the user pasted their form's code, keep its markup and classes and only rename and wire it. Otherwise build the plan's fields with their `fi-*` names, a `<label>` for each, `type="email"` and `type="tel"` where they fit, `required` on the email, and `<p data-form-status role="status"></p>` after the button.
+2. For a new form, one small `<style>` block scoped to its `id`: inherited font, full-width inputs, even spacing, a visible focus outline.
+3. The script tag and the handler above, after the form. On success, show a thank-you message in the status element and reset the form.
+
+Then say where it goes: a Custom HTML block in WordPress, a Code Embed in Webflow, a Code Block in Squarespace, an Embed HTML element in Wix, an Embed in Framer, or the page's HTML before `</body>`. Some builders need a paid plan for custom code. Some run embeds in an iframe on their own domain: if Authorized domains are set and the test lands in Spam, add that domain. In the hand-off block (SKILL.md, section 6), replace "Changed: <files>" with where to paste it.
+
 ## Renaming
 
 Rename in the markup unless something reads the old name: `form.elements.email`, a `[name="email"]` selector in CSS or JS, a plugin's generated markup, a shared template. Then keep the name and remap right after `new FormData(form)` with the `getAll`, `append`, `delete` loop from SKILL.md. The loop also fixes a checkbox group that repeats a bare name: every checked value moves to the `[]` name.

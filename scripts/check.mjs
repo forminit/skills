@@ -72,16 +72,18 @@ const full = renderSetupPrompt({ formId: "abc12def345", hasAuthorizedDomains: tr
 // The prompt carries no field rules (the guide does); it must route every kind of agent to the guide
 for (const must of [
   "Form ID: abc12def345",
-  "npx skills add forminit/skills --skill forminit-setup -y",
-  ".agents/skills/forminit-setup/SKILL.md",
-  ".claude/skills/forminit-setup/SKILL.md",
+  "Connect my form to Forminit",
+  "If I have no form yet",
+  // -y: agents cannot answer the installer's questions. -a: no stray agent/ folder when no agent is detected.
+  "npx skills add forminit/skills --skill forminit-setup -a universal claude-code -y",
+  "read .agents/skills/forminit-setup/SKILL.md",
   "read https://forminit.com/setup.md in full",
   "stop and tell me",
 ]) {
   if (!prompt.includes(must)) fail(`prompt: missing "${must}"`);
 }
 if (!skill.includes(`name: ${skillName}`)) fail("SKILL.md: the install command's --skill must match the skill name");
-for (const wrong of ["getform", "Getform", "YOUR_FORM_ID", "Endpoint:", "res.ok", "curl", "?ref="]) {
+for (const wrong of ["getform", "Getform", "YOUR_FORM_ID", "Endpoint:", "res.ok", "curl", "?ref=", "this project"]) {
   if (prompt.includes(wrong) || docsPrompt.includes(wrong) || full.includes(wrong)) fail(`prompt: must not contain "${wrong}"`);
 }
 if (/abc12def345|undefined|null/.test(docsPrompt)) fail("docs prompt: leaked an ID or an empty value");

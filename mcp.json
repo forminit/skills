@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "forminit": {
+      "url": "https://api.forminit.com/mcp"
+    }
+  }
+}

@@ -5,7 +5,7 @@
 // Checks the Agent Skills spec rules that break installs, the size budgets,
 // broken reference links, and the facts the prompt repeats from SKILL.md.
 
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { FORM_ID_PATTERN, renderSetupPrompt } from "../prompts/setup-prompt.mjs";
@@ -103,6 +103,22 @@ for (const plugin of market.plugins ?? []) {
   }
 }
 if (!(market.plugins ?? []).some((p) => (p.skills ?? []).includes(`./skills/${skillName}`))) fail("marketplace.json: must list ./skills/forminit-setup");
+
+// Cursor plugin (cursor.com/docs/reference/plugins): the skill comes from skills/ discovery, the MCP server from mcp.json
+const cursor = JSON.parse(read(".cursor-plugin/plugin.json"));
+if (!/^[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?$/.test(cursor.name ?? "")) fail(".cursor-plugin/plugin.json: name must be lowercase kebab-case");
+if (!cursor.description) fail(".cursor-plugin/plugin.json: the marketplace needs a description");
+if (!/^\d+\.\d+\.\d+$/.test(cursor.version ?? "")) fail(".cursor-plugin/plugin.json: version must be semver");
+if (cursor.skills !== undefined) fail(".cursor-plugin/plugin.json: leave skills to folder discovery, a path replaces it");
+const logo = cursor.logo ?? "";
+if (!logo || logo.startsWith("/") || logo.includes("..") || !existsSync(join(root, logo))) fail(`.cursor-plugin/plugin.json: logo ${logo} must be a relative path to a committed file`);
+const mcp = JSON.parse(read("mcp.json"));
+const servers = Object.entries(mcp.mcpServers ?? {});
+if (servers.length !== 1 || !mcp.mcpServers.forminit) fail("mcp.json: must declare only the forminit server");
+for (const [id, server] of servers) {
+  if (server.url !== "https://api.forminit.com/mcp") fail(`mcp.json: ${id} must point to https://api.forminit.com/mcp`);
+  if (server.headers || server.command) fail(`mcp.json: ${id} signs in with OAuth; no headers, keys or local command`);
+}
 
 if (errors.length) {
   console.error(errors.map((e) => `✗ ${e}`).join("\n"));

@@ -1,0 +1,14 @@
+{
+  "name": "forminit",
+  "version": "1.0.0",
+  "description": "Connect website and app forms to the Forminit form backend, and manage forms and submissions from Cursor. Includes the forminit-setup skill, which wires an existing form to Forminit, and the Forminit MCP server, which creates forms, reads and triages submissions and finds delivery problems.",
+  "author": {
+    "name": "Forminit",
+    "email": "info@forminit.com"
+  },
+  "homepage": "https://forminit.com",
+  "repository": "https://github.com/forminit/skills",
+  "license": "MIT",
+  "keywords": ["forminit", "forms", "form-backend", "contact-form", "submissions", "mcp"],
+  "logo": "assets/logo.png"
+}

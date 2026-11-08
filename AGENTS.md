@@ -46,6 +46,8 @@ claude plugin validate --strict .
 
 `claude plugin validate` never reads `skills/`, so also smoke-test the plugin install in a throwaway config: `CLAUDE_CONFIG_DIR=$(mktemp -d) claude plugin marketplace add ./`, then `claude plugin install forminit@forminit`, and check that `claude plugin details forminit@forminit` lists the `forminit-setup` skill.
 
+The Cursor plugin is the same repository root: `.cursor-plugin/plugin.json`, the skill from `skills/` and the MCP server from `mcp.json`. Bump its `version` when either changes. To test it, copy the repository (without `.git`, `node_modules` and `dist`) to `~/.cursor/plugins/local/forminit`, run Developer: Reload Window, and check that Customize lists the `forminit-setup` skill and the `forminit` MCP server and that its sign-in completes.
+
 ```bash
 uvx --python 3.12 --from skills-ref==0.1.1 agentskills validate skills/forminit-setup
 ```
